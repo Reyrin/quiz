@@ -1,32 +1,38 @@
 import React from "react";
+import classNames from "classnames";
 
 const QuestionCard = ({
 	question,
 	answers,
 	callback,
 	userAnswer,
-	questionNr,
+	questionNumber,
 	totalQuestions,
 }) => {
 	return (
 		<div className="QuestionCard">
 			<p className="number">
-				Question: {questionNr} / {totalQuestions}
+				Question: {questionNumber} / {totalQuestions}
 			</p>
 
-			<p className="question">{question}</p>
+			<p dangerouslySetInnerHTML={{ __html: question }} />
+
+			<p>{}</p>
 
 			<ul className="answers">
 				{answers.map((answ) => (
 					<li
 						key={answ}
-						style={{
-							color:
-								userAnswer === answ ? "red" : "",
-						}}
-						onClick={callback}
+						className={classNames({
+							correct: userAnswer?.correctAnswer === answ,
+							incorrect: userAnswer?.answer === answ,
+						})}
 					>
-						{answ}
+						<button
+							dangerouslySetInnerHTML={{ __html: answ }}
+							disabled={userAnswer ? true : false}
+							onClick={callback}
+						/>
 					</li>
 				))}
 			</ul>

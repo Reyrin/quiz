@@ -1,59 +1,83 @@
 import React from "react";
-import axios from "axios";
 
 import "./App.css";
-import { shuffleArray } from "./utils/shuffle";
-
 import QuestionCard from "./components/QuestionCard";
+import { getQuestions } from "./API";
 
 function App() {
 	const [loading, setLoading] = React.useState(true);
 	const [questions, setQuestions] = React.useState([]);
 	const [number, setNumber] = React.useState(0);
-	const [userAnswers, setUserAnswers] = React.useState([]);
+	const [userAnswers, setUserAnswers] = React.useState("");
 	const [score, setScore] = React.useState(0);
 	const [gameOver, setGameOver] = React.useState(true);
 
-	React.useEffect(() => {
-		async function getQuestions() {
-			try {
-				const questionsResponse = await axios.get(
-					`https://opentdb.com/api.php?amount=10`
-				);
+	const TOTAL_QUESTIONS = 10;
 
-				setQuestions(
-					questionsResponse.data.results.map((question) => ({
-						...question,
-						answers: shuffleArray([
-							...question.incorrect_answers,
-							question.correct_answer,
-						]),
-					}))
-				);
+	const start = async () => {
+		setLoading(true);
+		const newQuestion = await getQuestions();
 
-				setLoading(false);
-			} catch (error) {
-				alert(`Попробойте перезагрузить приложение. \nОшибка: ${error}`);
-			}
+		setQuestions(newQuestion);
+		setUserAnswers([]);
+		setScore(0);
+		setNumber(0);
+		setGameOver(false);
+		setLoading(false);
+	};
+
+	const checkAnswer = (e) => {
+		const answer = e.target.innerHTML;
+		const correct = questions[number].correct_answer === answer;
+
+		if (correct) setScore((prev) => prev + 1);
+
+		const answerObject = {
+			question: questions[number].question,
+			answer,
+			correct,
+			correctAnswer: questions[number].correct_answer,
+		};
+
+		setUserAnswers((prev) => [...prev, answerObject]);
+	};
+
+	const nextQuestion = () => {
+		const nextQ = number + 1;
+
+		if (nextQ === 10) {
+			setGameOver(true);
+		} else {
+			setNumber(nextQ);
 		}
-
-		getQuestions();
-	}, []);
+	};
 
 	return (
 		<div className="App">
 			<h1>REACT QUIZ</h1>
+			<h2>Score: {score}</h2>
+
+			{(gameOver || userAnswers.length === TOTAL_QUESTIONS) && (
+				<button onClick={start}>start</button>
+			)}
 
 			{!loading && (
 				<QuestionCard
 					question={questions[number].question}
 					answers={questions[number].answers}
-					userAnswer={"gip"}
-					callback={() => console.log(123)}
-					questionNr={5}
-					totalQuestions={10}
+					userAnswer={userAnswers ? userAnswers[number] : undefined}
+					callback={checkAnswer}
+					questionNumber={number + 1}
+					totalQuestions={TOTAL_QUESTIONS}
 				/>
 			)}
+
+			{!gameOver &&
+				!loading &&
+				userAnswers.length === number + 1 &&
+				number !== TOTAL_QUESTIONS - 1 && (
+					<button onClick={nextQuestion}>Next</button>
+				)}
 		</div>
 	);
 }
