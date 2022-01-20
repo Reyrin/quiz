@@ -27,7 +27,7 @@ function App() {
 	};
 
 	const checkAnswer = (e) => {
-		const answer = e.target.innerHTML;
+		const answer = e.target.attributes.value.value;
 		const correct = questions[number].correct_answer === answer;
 
 		if (correct) setScore((prev) => prev + 1);
@@ -55,7 +55,7 @@ function App() {
 	return (
 		<div className="App">
 			<h1>REACT QUIZ</h1>
-			<h2>Score: {score}</h2>
+			{!gameOver && <h2>Score: {score}</h2>}
 
 			{(gameOver || userAnswers.length === TOTAL_QUESTIONS) && (
 				<button onClick={start}>start</button>

@@ -29,6 +29,7 @@ const QuestionCard = ({
 						})}
 					>
 						<button
+						 	value={answ}
 							dangerouslySetInnerHTML={{ __html: answ }}
 							disabled={userAnswer ? true : false}
 							onClick={callback}
