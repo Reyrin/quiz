@@ -10,14 +10,12 @@ const QuestionCard = ({
 	totalQuestions,
 }) => {
 	return (
-		<div className="QuestionCard">
-			<p className="number">
+		<div className="question-card">
+			<p className="question-number">
 				Question: {questionNumber} / {totalQuestions}
 			</p>
 
-			<p dangerouslySetInnerHTML={{ __html: question }} />
-
-			<p>{}</p>
+			<p dangerouslySetInnerHTML={{ __html: question }} className="question" />
 
 			<ul className="answers">
 				{answers.map((answ) => (
@@ -29,6 +27,7 @@ const QuestionCard = ({
 						})}
 					>
 						<button
+							className="answer-btn"
 						 	value={answ}
 							dangerouslySetInnerHTML={{ __html: answ }}
 							disabled={userAnswer ? true : false}

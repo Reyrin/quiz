@@ -16,7 +16,7 @@ function App() {
 
 	const start = async () => {
 		setLoading(true);
-		const newQuestion = await getQuestions();
+		const newQuestion = await getQuestions(TOTAL_QUESTIONS);
 
 		setQuestions(newQuestion);
 		setUserAnswers([]);
@@ -45,7 +45,7 @@ function App() {
 	const nextQuestion = () => {
 		const nextQ = number + 1;
 
-		if (nextQ === 10) {
+		if (nextQ === TOTAL_QUESTIONS) {
 			setGameOver(true);
 		} else {
 			setNumber(nextQ);
@@ -53,12 +53,16 @@ function App() {
 	};
 
 	return (
-		<div className="App">
+		<div className="quiz">
 			<h1>REACT QUIZ</h1>
 			{!gameOver && <h2>Score: {score}</h2>}
 
 			{(gameOver || userAnswers.length === TOTAL_QUESTIONS) && (
-				<button onClick={start}>start</button>
+				<button className="btn-start" onClick={start}>
+					{userAnswers.length === TOTAL_QUESTIONS
+						? "restart"
+						: "start"}
+				</button>
 			)}
 
 			{!loading && (
@@ -76,7 +80,7 @@ function App() {
 				!loading &&
 				userAnswers.length === number + 1 &&
 				number !== TOTAL_QUESTIONS - 1 && (
-					<button onClick={nextQuestion}>Next</button>
+					<button onClick={nextQuestion} className="next-btn">Next</button>
 				)}
 		</div>
 	);

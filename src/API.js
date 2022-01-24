@@ -2,10 +2,10 @@ import axios from "axios";
 
 import { shuffleArray } from "./utils/shuffle";
 
-export async function getQuestions() {
+export async function getQuestions(totalQuestions) {
     try {
         const questionsResponse = await axios.get(
-            `https://opentdb.com/api.php?amount=10`
+            `https://opentdb.com/api.php?amount=${totalQuestions}`
         );
 
         return (
