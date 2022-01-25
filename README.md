@@ -5,11 +5,10 @@
 ### Demo - https://reyrin.github.io/quiz/
 
 ## Stack:
-1. TypeScript
-2. React
-3. React Hooks
-4. Trivia API
-5. Axios
+1. React
+2. React Hooks
+3. Trivia API
+4. Axios
 
 ## Installation
 ```
