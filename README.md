@@ -1,4 +1,4 @@
-# ❓ quiz
+# ❓ Quiz
 
 ![quiz](https://user-images.githubusercontent.com/51198976/150990259-7ecae119-8439-481a-98e7-4cfed95b2760.png)
 
